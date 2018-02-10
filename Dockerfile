@@ -1,7 +1,5 @@
 FROM ubuntu:16.04
 
-MAINTAINER "Keqiang Li" lkq@umich.edu
-
 ## Add user to 'staff' group, granting them write privileges to /usr/local/lib/R/site.library
 RUN useradd docker \
 	&& mkdir /home/docker \
@@ -32,7 +30,7 @@ ENV LANG en_US.UTF-8
 RUN echo "deb https://cloud.r-project.org/bin/linux/ubuntu xenial/" > /etc/apt/sources.list.d/cran.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 
-ENV R_BASE_VERSION 3.4.1
+ENV R_BASE_VERSION 3.4.3
 
 ## Now install R and littler, and create a link for littler in /usr/local/bin
 ## Also set a default CRAN repo, and make sure littler knows about it too
@@ -53,3 +51,9 @@ RUN apt-get update \
 	&& install.r docopt \
 	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
 	&& rm -rf /var/lib/apt/lists/*
+
+
+ADD install_packages.R /install_packages.R
+RUN Rscript install_packages.R
+
+ENTRYPOINT Rscript
