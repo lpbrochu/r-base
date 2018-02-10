@@ -1,0 +1,9 @@
+FROM openanalytics/r-base
+
+#adds server.R, ui.R, and source files to project directory
+ADD . /
+
+RUN apt-get update && apt-get --assume-yes install curl wget
+
+#loads necessary packages
+RUN Rscript install_packages.R
